@@ -1,7 +1,7 @@
 ﻿using System;
 namespace ZooManager
 {
-    public class Occupant
+    abstract public class Occupant
     {
         public string emoji;
         public string species;

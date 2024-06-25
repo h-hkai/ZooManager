@@ -91,15 +91,16 @@ namespace ZooManager
                     for (var x = 0; x < numCellsX; x++)
                     {
                         var zone = animalZones[y][x];
-                        if (zone.occupant is Animal animal && animal.reactionTime == r)
+                        if (zone.occupant is Animal animal && animal.reactionTime == r && animal.round != roundCounter)
                         {
-                            if (animal is Mouse mouse && mouse.round != roundCounter)
+                            animal.round = roundCounter;
+                            if (animal is Mouse mouse)
                             {
-                                Console.WriteLine($"animal.reactionTime = {animal.reactionTime}");
                                 mouse.Move();
-                                mouse.round = roundCounter;
-                            }
-                            else
+                            } else if (animal is Rabbit rabbit)
+                            {
+                                rabbit.Move();
+                            } else
                             {
                                 animal.Activate();
                             }
