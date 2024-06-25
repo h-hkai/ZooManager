@@ -10,7 +10,9 @@ namespace ZooManager
         static public List<List<bool>> animalZonesVisited = new List<List<bool>>();
         public Stack<Point> paths = new Stack<Point>();
 
+        public int speed;
         public int round = -1;
+        public bool isLive = true;
 
         virtual public void Activate()
         {

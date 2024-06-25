@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ZooManager
 {
@@ -15,6 +16,7 @@ namespace ZooManager
             emoji = "🐭";
             species = "mouse";
             this.name = name;
+            this.speed = 2;
             reactionTime = random.Next(MinReactionTime, MaxReactionTime + 1);
 
             // init
@@ -37,17 +39,32 @@ namespace ZooManager
                     break;
                 case 2:
                     paths.Pop();
+                    Step();
                     break;
                 default:
                     paths.Pop();
+                    Step();
                     paths.Pop();
+                    if (this.isLive) { Step(); }
                     break;
             }
 
+            paths.Clear();
+        }
+
+        public void Step()
+        {
             int x = paths.Peek().x;
             int y = paths.Peek().y;
 
-            paths.Clear();
+            var trapZone = Game.animalZones[y][x];
+            if (trapZone.occupant is Trap trap)
+            {
+                this.isLive = false;
+                Game.animalZones[location.y][location.x].occupant = null;
+                trapZone.occupant = null;
+                return;
+            }
 
             var targetZone = Game.animalZones[y][x];
             if (targetZone.occupant is Flowers)
@@ -56,7 +73,7 @@ namespace ZooManager
                 Console.WriteLine($"{name} ate a flower at {x},{y} and disappeared.");
                 targetZone.occupant = null;
                 Game.animalZones[location.y][location.x].occupant = null;
-                
+
             }
             else if (targetZone.occupant == null)
             {

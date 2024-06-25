@@ -15,6 +15,8 @@ namespace ZooManager
         static public List<List<Zone>> animalZones = new List<List<Zone>>();
         static public Zone holdingPen = new Zone(-1, -1, null);
 
+        static public int coinsCounter = 0;
+
         static public void SetUpGame()
         {
             for (var y = 0; y < numCellsY; y++)
@@ -130,6 +132,7 @@ namespace ZooManager
                 PlaceMouseInOuterGrid();
             }
 
+            // Add logic to spawn mice every 4 rounds
             if (roundCounter % 4 == 0)
             {
                 PlaceRabbitInOuterGrid();
@@ -252,13 +255,19 @@ namespace ZooManager
                 switch(occupantType)
                 {
                     case "cat":
-                        obj = new Cat("Cat" + roundCounter); 
+                        if (coinsCounter < 5) return;
+                        obj = new Cat("Cat" + roundCounter);
+                        coinsCounter -= 5;
                         break;
                     case "gardenKeeper":
+                        if (coinsCounter < 10) return;
                         obj = new GardenKeeper("GardeKeeper" +  roundCounter);
+                        coinsCounter -= 10;
                         break;
                     case "trap":
+                        if (coinsCounter < 2) return;
                         obj = new Trap();
+                        coinsCounter -= 2;
                         break;
                     default:
                         return;
