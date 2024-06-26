@@ -43,9 +43,10 @@ namespace ZooManager
                 var curPoint = que.Dequeue();
                 x = curPoint.x;
                 y = curPoint.y;
-                if (Game.animalZones[y][x].occupant is Flowers)
+                if (Game.animalZones[y][x].occupant is Flowers flowers)
                 {
                     paths.Push(new Point { x = x, y = y });
+                    flowers.hazardIndex = System.Math.Min(flowers.hazardIndex, System.Math.Abs(x - location.x) + System.Math.Abs(y - location.y));
                     break;
                 }
                 for (int i = 0; i < 4; i++)

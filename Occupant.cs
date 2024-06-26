@@ -16,7 +16,7 @@ namespace ZooManager
         // If the obj are in the map.
         public bool isInMap(Point next)
         {
-            int x = next.x; 
+            int x = next.x;
             int y = next.y;
             if (0 <= x && x < Game.numCellsX && 0 <= y && y < Game.numCellsY) return true;
             return false;
@@ -25,9 +25,9 @@ namespace ZooManager
         // If the obj are in the garden.
         public bool isInGarden(Point next)
         {
-            int x = this.location.x;
-            int y = this.location.y;
-            if (3 <= x && x <= 7 && 3 <= y && y <= 7) return true;
+            int x = next.x;
+            int y = next.y;
+            if (4 <= x && x <= 6 && 4 <= y && y <= 6) return true;
             return false;
         }
     }

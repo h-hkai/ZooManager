@@ -102,7 +102,14 @@ namespace ZooManager
                             } else if (animal is Rabbit rabbit)
                             {
                                 rabbit.Move();
-                            } else
+                            } else if (animal is Cat cat)
+                            {
+                                cat .Move();
+                            } else if (animal is GardenKeeper gardenKeeper)
+                            {
+                                gardenKeeper .Move();
+                            }
+                            else
                             {
                                 animal.Activate();
                             }
@@ -234,7 +241,7 @@ namespace ZooManager
                 clickedZone.occupant.location = clickedZone.location;
                 holdingPen.occupant = null;
                 Console.WriteLine("Empty spot now holds: " + clickedZone.emoji);
-                ActivateAnimals();
+                //ActivateAnimals();
             }
             else if (holdingPen.occupant != null && clickedZone.occupant != null)
             {
@@ -274,7 +281,7 @@ namespace ZooManager
                 }
                 Console.WriteLine("Taking " + obj.emoji);
                 holdingPen.occupant = obj;
-                ActivateAnimals();
+                //ActivateAnimals();
             }
             Console.WriteLine($"Holding pen occupant at {holdingPen.occupant.location.x},{holdingPen.occupant.location.y}");
         }

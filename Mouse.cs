@@ -30,6 +30,8 @@ namespace ZooManager
 
         public void Move()
         {
+            Console.WriteLine($"{name} moved.");
+            
             BFS();
             switch (paths.Count)
             {
@@ -38,21 +40,20 @@ namespace ZooManager
                 case 1:
                     break;
                 case 2:
-                    paths.Pop();
-                    Step();
+                    Step(paths.Pop());
                     break;
                 default:
-                    paths.Pop();
-                    Step();
-                    paths.Pop();
-                    if (this.isLive) { Step(); }
+                    Step(paths.Pop());
+                    if (this.isLive) { 
+                        Step(paths.Pop()); 
+                    }
                     break;
             }
 
             paths.Clear();
         }
 
-        public void Step()
+        public void Step(Point last)
         {
             int x = paths.Peek().x;
             int y = paths.Peek().y;
@@ -82,6 +83,39 @@ namespace ZooManager
                 this.location = new Point { x = x, y = y };
                 Game.animalZones[y][x].occupant = this;
                 Console.WriteLine($"{name} moved to {x},{y}");
+            }
+
+            Scared(last);
+        }
+
+        public void Scared(Point last)
+        {
+            for (var y = 0; y < Game.numCellsY; y++)
+            {
+                for (var x = 0; x < Game.numCellsX; x++)
+                {
+                    var zone = Game.animalZones[y][x];
+                    if (zone.occupant is Animal animal1 && animal1 is GardenKeeper gardenKeeper)
+                    {
+                        var h = System.Math.Abs(this.location.y - gardenKeeper.location.y);
+                        var w = System.Math.Abs(this.location.x - gardenKeeper.location.x);
+                        var distance = System.Math.Sqrt(h * h + w * w);
+                        if (distance <= 2)
+                        {
+                            paths.Push(last);
+                        }
+                    } else if (zone.occupant is Animal animal2 && animal2 is Cat cat)
+                    {
+                        var h = System.Math.Abs(this.location.y - cat.location.y);
+                        var w = System.Math.Abs(this.location.x - cat.location.x);
+                        var distance = System.Math.Sqrt(h * h + w * w);
+                        if (distance <= 1)
+                        {
+                            paths.Push(last);
+                        }
+                    }
+                    
+                }
             }
         }
     }
